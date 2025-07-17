@@ -5,23 +5,22 @@ package main
 import "fmt"
 
 func main() {
-	p := "aaba#aabaab"
-	// p := "aabaacaabaad"
+	// p := "aaba#aabaab"
+	// Ans : [0 1 0 1 0 1 2 3 4 2 3]
+	p := "aabaacaabaad"
+	// Ans : [0 1 0 1 2 0 1 2 3 4 5 0]
 	// p := "aabaaabaab"
-	lps := []int{0}
-	length := 0
+	// Ans : [0 1 0 1 2 2 3 4 5 3]
+	lps := make([]int, len(p))
+	l := 0
 	for i := 1; i < len(p); i++ {
-		if p[length] == p[i] {
-			length += 1
-		} else {
-			for length != 0 && p[length] != p[i] {
-				length = lps[length-1]
-			}
-			if length != 0 {
-				length += 1
-			}
+		for l > 0 && p[l] != p[i] {
+			l = lps[l-1]
 		}
-		lps = append(lps, length)
+		if p[l] == p[i] {
+			l += 1
+			lps[i] = l
+		}
 	}
 	fmt.Println(lps)
 }
