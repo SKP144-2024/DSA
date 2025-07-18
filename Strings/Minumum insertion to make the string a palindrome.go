@@ -1,3 +1,6 @@
+// First try - 7 mins 11 secs
+// Second try - 5 mins 26 secs
+
 package main
 
 import (
@@ -72,3 +75,46 @@ func main() {
 
 	// 🔄 Add more custom stress/edge cases if needed
 }
+
+// package main
+
+// import (
+// 	"fmt"
+// )
+
+// func minInsertionsToPalindrome(s string) int {
+// 	return 0
+// }
+
+// // ✅ Test runner
+// func runTestCase(s string, expected int) {
+// 	output := minInsertionsToPalindrome(s)
+// 	fmt.Printf("Input: \"%s\"\n", s)
+// 	fmt.Printf("Expected: %d\n", expected)
+// 	fmt.Printf("Your Output: %d\n", output)
+
+// 	if output == expected {
+// 		fmt.Println("✅ PASS")
+// 	} else {
+// 		fmt.Println("❌ FAIL")
+// 	}
+// 	fmt.Println("----------------------------------")
+// }
+
+// func main() {
+// 	// 🧪 Testcases
+
+// 	runTestCase("a", 0)       // already a palindrome
+// 	runTestCase("ab", 1)      // make it "aba" or "bab"
+// 	runTestCase("abc", 2)     // make it "cbabc" or similar
+// 	runTestCase("race", 3)    // "ecarace"
+// 	runTestCase("aebcbda", 2) // make it "adabcbda"
+// 	runTestCase("abcdba", 1)  // insert 1 to fix
+// 	runTestCase("aaaa", 0)    // already palindrome
+// 	runTestCase("aabb", 2)    // minimal insertions
+// 	runTestCase("abca", 1)    // "abcba"
+// 	runTestCase("", 0)        // empty string is palindrome
+// 	runTestCase("abcd", 3)    // "dcbabcd"
+
+// 	// 🔄 Add more custom stress/edge cases if needed
+// }
