@@ -35,48 +35,82 @@ type TreeNode struct {
 // 	return leftView
 // }
 
-type Pair struct {
-	node  *TreeNode
-	level int
-}
+// type Pair struct {
+// 	node  *TreeNode
+// 	level int
+// }
 
-type Queue struct {
-	data []Pair
-}
+// type Queue struct {
+// 	data []Pair
+// }
 
-func (q *Queue) enqueue(x Pair) { q.data = append(q.data, x) }
-func (q *Queue) dequeue() Pair {
-	val := q.data[0]
-	q.data = q.data[1:]
-	return val
-}
-func (q *Queue) front() Pair   { return q.data[0] }
-func (q *Queue) isEmpty() bool { return len(q.data) == 0 }
+// func (q *Queue) enqueue(x Pair) { q.data = append(q.data, x) }
+// func (q *Queue) dequeue() Pair {
+// 	val := q.data[0]
+// 	q.data = q.data[1:]
+// 	return val
+// }
+// func (q *Queue) front() Pair   { return q.data[0] }
+// func (q *Queue) isEmpty() bool { return len(q.data) == 0 }
+
+// // 🔒 Implement this function
+// func leftView(root *TreeNode) []int {
+// 	if root == nil {
+// 		return []int{}
+// 	}
+// 	leftview := []int{}
+// 	queue := Queue{}
+// 	seenLevel := map[int]int{}
+// 	queue.enqueue(Pair{root, 0})
+// 	for !queue.isEmpty() {
+// 		curr := queue.dequeue()
+
+// 		if _, ok := seenLevel[curr.level]; !ok {
+// 			leftview = append(leftview, curr.node.Val)
+// 			seenLevel[curr.level] = curr.node.Val
+// 		}
+
+// 		if curr.node.Left != nil {
+// 			queue.enqueue(Pair{curr.node.Left, curr.level + 1})
+// 		}
+// 		if curr.node.Right != nil {
+// 			queue.enqueue(Pair{curr.node.Right, curr.level + 1})
+// 		}
+// 	}
+// 	return leftview
+// }
 
 // 🔒 Implement this function
 func leftView(root *TreeNode) []int {
 	if root == nil {
 		return []int{}
 	}
+	type Pair struct {
+		node  *TreeNode
+		level int
+	}
+	queue := []Pair{Pair{root, 0}}
 	leftview := []int{}
-	queue := Queue{}
-	seenLevel := map[int]int{}
-	queue.enqueue(Pair{root, 0})
-	for !queue.isEmpty() {
-		curr := queue.dequeue()
+	seenNode := map[int]bool{}
 
-		if _, ok := seenLevel[curr.level]; !ok {
+	for len(queue) > 0 {
+		curr := queue[0]
+		queue = queue[1:]
+
+		if !seenNode[curr.level] {
 			leftview = append(leftview, curr.node.Val)
-			seenLevel[curr.level] = curr.node.Val
+			seenNode[curr.level] = true
 		}
 
 		if curr.node.Left != nil {
-			queue.enqueue(Pair{curr.node.Left, curr.level + 1})
+			queue = append(queue, Pair{curr.node.Left, curr.level + 1})
 		}
+
 		if curr.node.Right != nil {
-			queue.enqueue(Pair{curr.node.Right, curr.level + 1})
+			queue = append(queue, Pair{curr.node.Right, curr.level + 1})
 		}
 	}
+
 	return leftview
 }
 
