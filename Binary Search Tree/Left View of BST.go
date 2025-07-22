@@ -11,28 +11,73 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+// // 🔒 Implement this function
+// func leftView(root *TreeNode) []int {
+// 	leftView := []int{}
+// 	depth := 0
+// 	maxDep := 0
+// 	var traverse func(*TreeNode)
+// 	traverse = func(node *TreeNode) {
+// 		if node == nil {
+// 			return
+// 		}
+// 		// fmt.Println(depth, node.Val)
+// 		depth += 1
+// 		if depth > maxDep {
+// 			maxDep = depth
+// 			leftView = append(leftView, node.Val)
+// 		}
+// 		traverse(node.Left)
+// 		traverse(node.Right)
+// 		depth -= 1
+// 	}
+// 	traverse(root)
+// 	return leftView
+// }
+
+type Pair struct {
+	node  *TreeNode
+	level int
+}
+
+type Queue struct {
+	data []Pair
+}
+
+func (q *Queue) enqueue(x Pair) { q.data = append(q.data, x) }
+func (q *Queue) dequeue() Pair {
+	val := q.data[0]
+	q.data = q.data[1:]
+	return val
+}
+func (q *Queue) front() Pair   { return q.data[0] }
+func (q *Queue) isEmpty() bool { return len(q.data) == 0 }
+
 // 🔒 Implement this function
 func leftView(root *TreeNode) []int {
-	leftView := []int{}
-	depth := 0
-	maxDep := 0
-	var traverse func(*TreeNode)
-	traverse = func(node *TreeNode) {
-		if node == nil {
-			return
-		}
-		// fmt.Println(depth, node.Val)
-		depth += 1
-		if depth > maxDep {
-			maxDep = depth
-			leftView = append(leftView, node.Val)
-		}
-		traverse(node.Left)
-		traverse(node.Right)
-		depth -= 1
+	if root == nil {
+		return []int{}
 	}
-	traverse(root)
-	return leftView
+	leftview := []int{}
+	queue := Queue{}
+	seenLevel := map[int]int{}
+	queue.enqueue(Pair{root, 0})
+	for !queue.isEmpty() {
+		curr := queue.dequeue()
+
+		if _, ok := seenLevel[curr.level]; !ok {
+			leftview = append(leftview, curr.node.Val)
+			seenLevel[curr.level] = curr.node.Val
+		}
+
+		if curr.node.Left != nil {
+			queue.enqueue(Pair{curr.node.Left, curr.level + 1})
+		}
+		if curr.node.Right != nil {
+			queue.enqueue(Pair{curr.node.Right, curr.level + 1})
+		}
+	}
+	return leftview
 }
 
 // ✅ Helper to run test cases
