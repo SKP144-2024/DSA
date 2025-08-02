@@ -11,52 +11,76 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-type StateNode struct {
-	node  *TreeNode
-	state int // 1: preorder, 2: inorder, 3: postorder
+type TimeNode struct {
+	node *TreeNode
+	time int
 }
 
 type Stack struct {
-	data []StateNode
+	data []TimeNode
 }
 
-func (s *Stack) push(x StateNode) { s.data = append(s.data, x) }
-func (s *Stack) pop() StateNode {
+func (s *Stack) push(x TimeNode) { s.data = append(s.data, x) }
+func (s *Stack) pop() TimeNode {
 	val := s.data[len(s.data)-1]
 	s.data = s.data[:len(s.data)-1]
 	return val
 }
-func (s *Stack) top() StateNode { return s.data[len(s.data)-1] }
-func (s *Stack) isEmpty() bool  { return len(s.data) == 0 }
+func (s *Stack) top() TimeNode { return s.data[len(s.data)-1] }
+func (s *Stack) isEmpty() bool { return len(s.data) == 0 }
 
 // 🔒 Implement this
 func threeTraversals(root *TreeNode) (preorder, inorder, postorder []int) {
 	if root == nil {
 		return
 	}
+
 	stack := Stack{}
-	stack.push(StateNode{root, 1})
+	stack.push(TimeNode{root, 1})
 	for !stack.isEmpty() {
 		curr := stack.pop()
-		// fmt.Println(stack)
-		if curr.state == 1 {
+
+		switch curr.time {
+		case 1:
 			preorder = append(preorder, curr.node.Val)
-			stack.push(StateNode{curr.node, curr.state + 1})
+			curr.time += 1
+			stack.push(curr)
 			if curr.node.Left != nil {
-				stack.push(StateNode{curr.node.Left, 1})
+				stack.push(TimeNode{curr.node.Left, 1})
 			}
-		} else if curr.state == 2 {
+		case 2:
 			inorder = append(inorder, curr.node.Val)
-			stack.push(StateNode{curr.node, curr.state + 1})
+			curr.time += 1
+			stack.push(curr)
 			if curr.node.Right != nil {
-				stack.push(StateNode{curr.node.Right, 1})
+				stack.push(TimeNode{curr.node.Right, 1})
 			}
-		} else if curr.state == 3 {
+		default:
 			postorder = append(postorder, curr.node.Val)
 		}
 	}
+
 	return
 }
+
+// func threeTraversals(root *TreeNode) (preorder, inorder, postorder []int) {
+// 	if root == nil {
+// 		return
+// 	}
+// 	traverse := func(*TreeNode) {}
+// 	traverse = func(node *TreeNode) {
+// 		if node == nil {
+// 			return
+// 		}
+// 		preorder = append(preorder, node.Val)
+// 		traverse(node.Left)
+// 		inorder = append(inorder, node.Val)
+// 		traverse(node.Right)
+// 		postorder = append(postorder, node.Val)
+// 	}
+// 	traverse(root)
+// 	return
+// }
 
 func normalize(slice []int) []int {
 	if slice == nil {
