@@ -22,6 +22,9 @@ func topoSortDFS(graph map[int][]int, n int) []int {
 		} else {
 			visited[node] = 2
 			for _, child := range graph[node] {
+				if hasCycle {
+					return
+				}
 				dfs(child)
 			}
 			visited[node] = 1
